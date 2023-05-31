@@ -65,7 +65,6 @@ const app = {
     displayActivities: (name) => {
         const activitiesNode = document.getElementById("activities");
         for (let activity of base.activities) {
-            console.log(activity);
             if(activity.author === name && activity.finished === true) {
                 const activityNode = document.createElement("li");
                 activityNode.textContent = activity.title;
