@@ -48,15 +48,18 @@ const app = {
         profilNameNode.textContent = pseudo; 
     },
 
-    diplayVote: () => {
-        const percentageHercule = Math.round(base.vote.hercule / (base.vote.hercule + base.vote.cesar) * 100);
-        const percentageCesar = Math.round(base.vote.cesar / (base.vote.hercule + base.vote.cesar) * 100);
-        const trendsHerculeNode = document.getElementById("trends-hercule");
-        const trendsCesarNode = document.getElementById("trends-cesar");
-        trendsHerculeNode.querySelector(".people__popularity").textContent = `${percentageHercule}%`;
-        trendsHerculeNode.querySelector(".people__bar").style.width = `${percentageHercule}%`;
-        trendsCesarNode.querySelector(".people__popularity").textContent = `${percentageCesar}%`;
-        trendsCesarNode.querySelector(".people__bar").style.width = `${percentageCesar}%`;
+    diplayVote: (name) => {
+        if (!base.vote[name]) {
+            return;
+        }
+        let totalVotes = 0;
+        for (const key in base.vote) {
+            totalVotes += base.vote[key];
+        }
+        const percentage = Math.round(base.vote[name] / totalVotes * 100);
+        const trendsNode = document.getElementById(`trends-${name}`);
+        trendsNode.querySelector(".people__popularity").textContent = `${percentage}%`;
+        trendsNode.querySelector(".people__bar").style.width = `${percentage}%`;
     },
 
     displayActivities: (name) => {
@@ -105,7 +108,8 @@ const app = {
         base.printFriends(Hercule.friends);
         base.setBestFriend(Hercule.friends[0]);
         app.displayPseudo(app.createPseudo(Hercule.name, Hercule.departement));
-        app.diplayVote();
+        app.diplayVote("hercule");
+        app.diplayVote("cesar");
         app.displayActivities("Hercule");
     },
 };
